@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "genius-car-services-18c77"
-  }
+    "default": "genius-car-service-70b52",
+    "build": "genius-car-service-70b52"
+  },
+  "targets": {}
 }
