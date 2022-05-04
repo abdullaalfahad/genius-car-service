@@ -9,12 +9,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PageTitle from '../../Shared/PageTitle/PageTitle';
 import axios from 'axios';
+import useToken from '../../../hooks/useToken';
 
 const Login = () => {
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const navigate = useNavigate();
     const location = useLocation();
+
 
     let from = location.state?.from?.pathname || "/";
     let errorElement;
@@ -24,6 +26,7 @@ const Login = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
+    const [token] = useToken(user);
 
     const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
@@ -31,9 +34,9 @@ const Login = () => {
         return <Loading></Loading>
     }
 
-    // if (user) {
-    //     // navigate(from, { replace: true });
-    // }
+    if (token) {
+        // navigate(from, { replace: true });
+    }
 
     if (error) {
         errorElement = <p className='text-danger'>Error: {error?.message}</p>
@@ -45,10 +48,6 @@ const Login = () => {
         const password = passwordRef.current.value;
 
         signInWithEmailAndPassword(email, password);
-
-        const { data } = await axios.post('https://tranquil-forest-94188.herokuapp.com/login', { email })
-        // console.log(data);
-        localStorage.setItem('accessToken', data);
         navigate(from, { replace: true });
     }
 
