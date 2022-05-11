@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -8,7 +8,6 @@ import SocialLogin from '../SocialLogin/SocialLogin';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PageTitle from '../../Shared/PageTitle/PageTitle';
-import axios from 'axios';
 import useToken from '../../../hooks/useToken';
 
 const Login = () => {
@@ -26,6 +25,7 @@ const Login = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
+    console.log({ user });
     const [token] = useToken(user);
 
     const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
@@ -47,8 +47,10 @@ const Login = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        signInWithEmailAndPassword(email, password);
-        navigate(from, { replace: true });
+        signInWithEmailAndPassword(email, password)
+            .then(res => {
+                navigate(from, { replace: true });
+            })
     }
 
     const navigateRegister = event => {
